@@ -1,0 +1,42 @@
+https://kshmask.netlify.com/1.html 나의 사이트 주소
+
+https://app.netlify.com/sites/kshmask/settings/general 호스팅사이트
+
+https://developers.kakao.com/apps/407368 카카오 개발자 사이트
+
+https://www.youtube.com/watch?v=GrABcKOWyR0  카카오API에대한 설명강좌
+
+https://app.swaggerhub.com/apis-docs/Promptech/public-mask-info/20200307-oas3#/
+공적마스크 판매처, 재고 조회API
+
+https://www.data.go.kr/dataset/15043008/fileData.do
+선별진료소API
+
+https://www.data.go.kr/dataset/15043009/fileData.do
+국민 안심 병원API
+
+https://devtalk.kakao.com/t/19-api/96272
+카카오 지도 쿼터 상향
+
+http://apis.map.kakao.com/web/sample/basicMap/
+카카오 지도 생성
+
+https://developers.kakao.com/apps/407368/settings/general
+카카오 나의 개발도구
+
+
+https://opentutorials.org/course/3085/18868
+WEB사이트 java스크립트를 넣음으로써 더 정돈시키기!
+
+전체적인 코로나19 공공데이터 핸드북
+https://hackmd.io/ngvgVMnYRRuTno71Uu6cMg#1-%EA%B3%B5%EC%A0%81%EB%A7%88%EC%8A%A4%ED%81%AC-%ED%8C%90%EB%A7%A4%EC%B2%98-%EC%9E%AC%EA%B3%A0-%EC%A1%B0%ED%9A%8C-API
+
+생활코딩 여기서부터 듣기
+https://opentutorials.org/course/3085/18850
+
+
+마커들
+https://mymask.info/images/marker-green.png
+https://mymask.info/images/marker-grey.png
+https://mymask.info/images/marker-red.png
+https://mymask.info/images/marker-yellow.png
