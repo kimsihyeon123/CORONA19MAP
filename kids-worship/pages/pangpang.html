@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>팡팡바이블 · 유아부</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>팡팡바이블 (설교 후 액티비티)</h1>
+    <nav class="nav">
+      <a href="/index.html">홈</a>
+      <a href="/pages/chant.html">챈트영상</a>
+      <a href="/pages/resources.html">교육자료</a>
+      <a href="/pages/english.html">영어학습</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="row">
+      <div style="flex:1;min-width:220px">
+        <label>연령</label>
+        <select id="age">
+          <option value="all">전체</option>
+          <option>0-4세</option>
+          <option>2-4세</option>
+          <option>3-4세</option>
+        </select>
+      </div>
+      <div style="flex:2;min-width:260px">
+        <label>검색(제목/태그/말씀)</label>
+        <input id="q" placeholder="예: 축복, 창세기" />
+      </div>
+    </div>
+
+    <div id="cards" class="list" style="margin-top:14px"></div>
+  </main>
+
+  <template id="tpl-card">
+    <div class="card">
+      <div class="row">
+        <h3 class="title" style="margin:0;flex:1"></h3>
+        <span class="tag age"></span>
+        <span class="tag time"></span>
+      </div>
+      <p class="objective"></p>
+      <p class="scripture"></p>
+      <div class="row tags"></div>
+      <details>
+        <summary>준비물/진행 보기</summary>
+        <div style="display:grid;gap:8px;margin-top:8px">
+          <div>
+            <strong>준비물</strong>
+            <ul class="materials"></ul>
+          </div>
+          <div>
+            <strong>진행</strong>
+            <ol class="steps"></ol>
+          </div>
+          <div class="tips"></div>
+        </div>
+      </details>
+      <div class="footer-actions no-print">
+        <button class="button small" data-act="print">인쇄</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="/assets/js/data.js"></script>
+  <script>
+    const elAge = document.getElementById('age');
+    const elQ = document.getElementById('q');
+    const elCards = document.getElementById('cards');
+
+    function render(){
+      const q = (elQ.value||'').toLowerCase();
+      const age = elAge.value;
+      const items = window.KIDS_DATA.activities.filter(a=>{
+        const okAge = age==='all' || a.age===age || (age==='0-4세' && a.age==='0-4세');
+        const hay = [a.title,a.scripture,a.objective,(a.tags||[]).join(' ')].join(' ').toLowerCase();
+        const okQ = !q || hay.includes(q);
+        return okAge && okQ;
+      });
+
+      elCards.innerHTML='';
+      if(!items.length){
+        const p = document.createElement('p'); p.className='alert'; p.textContent='조건에 맞는 액티비티가 없어요.'; elCards.appendChild(p); return;
+      }
+
+      const tpl = document.getElementById('tpl-card');
+      items.forEach(a=>{
+        const node = tpl.content.cloneNode(true);
+        node.querySelector('.title').textContent = a.title;
+        node.querySelector('.age').textContent = a.age;
+        node.querySelector('.time').textContent = `${a.timeMin}분`;
+        node.querySelector('.objective').textContent = a.objective;
+        node.querySelector('.scripture').innerHTML = `<span class='kbd'>말씀</span> ${a.scripture}`;
+        const tagsEl = node.querySelector('.tags');
+        (a.tags||[]).forEach(t=>{ const s=document.createElement('span'); s.className='tag'; s.textContent=t; tagsEl.appendChild(s); });
+        const mats = node.querySelector('.materials');
+        (a.materials||[]).forEach(m=>{ const li=document.createElement('li'); li.textContent=m; mats.appendChild(li); });
+        const steps = node.querySelector('.steps');
+        (a.steps||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
+        node.querySelector('.tips').innerHTML = a.tips ? `<span class='kbd'>Tip</span> ${a.tips}` : '';
+        const card = node.querySelector('.card');
+        node.querySelector('[data-act="print"]').addEventListener('click', ()=>{
+          const html = `<div class='printable'>`+
+            `<h2>${a.title}</h2>`+
+            `<p><strong>연령</strong> ${a.age} · <strong>시간</strong> ${a.timeMin}분</p>`+
+            `<p><strong>말씀</strong> ${a.scripture}</p>`+
+            `<p><strong>목표</strong> ${a.objective}</p>`+
+            `<h3>준비물</h3><ul>${(a.materials||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`+
+            `<h3>진행</h3><ol>${(a.steps||[]).map(x=>`<li>${x}</li>`).join('')}</ol>`+
+            (a.tips?`<p><strong>Tip</strong> ${a.tips}</p>`:'')+
+          `</div>`;
+          const w = window.open('', '_blank');
+          w.document.write(`<!doctype html><html><head><meta charset='utf-8'><title>${a.title}</title><link rel='stylesheet' href='/assets/css/styles.css'></head><body class='printable'>${html}</body></html>`);
+          w.document.close();
+          w.focus();
+          w.print();
+        });
+        elCards.appendChild(node);
+      });
+    }
+
+    elAge.addEventListener('change', render);
+    elQ.addEventListener('input', render);
+    render();
+  </script>
+</body>
+</html>

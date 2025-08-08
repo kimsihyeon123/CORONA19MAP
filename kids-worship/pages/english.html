@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>영어학습 · 유아부</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>영어학습</h1>
+    <nav class="nav">
+      <a href="/index.html">홈</a>
+      <a href="/pages/chant.html">챈트영상</a>
+      <a href="/pages/pangpang.html">팡팡바이블</a>
+      <a href="/pages/resources.html">교육자료</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h3>영어 챈트/송 재생목록</h3>
+      <div class="row">
+        <div style="flex:2;min-width:260px">
+          <label>제목</label>
+          <input id="title" placeholder="예: ABC Song" />
+        </div>
+        <div style="flex:3;min-width:260px">
+          <label>YouTube 링크 또는 ID</label>
+          <input id="url" placeholder="예: https://youtu.be/xxxx 또는 abcDEF123" />
+        </div>
+        <div style="align-self:flex-end">
+          <button class="button primary" id="addBtn">추가</button>
+        </div>
+      </div>
+      <div id="videoList" class="video-grid" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>플래시카드 생성기</h3>
+      <label>단어 (콤마로 구분)</label>
+      <textarea id="words" rows="3" placeholder="예: apple, banana, cat, dog"></textarea>
+      <div class="footer-actions">
+        <button class="button" id="previewBtn">미리보기</button>
+        <button class="button" id="printBtn">인쇄</button>
+      </div>
+      <div id="flashPreview" style="margin-top:12px"></div>
+    </div>
+  </main>
+
+  <script src="/assets/js/app.js"></script>
+  <script>
+    const videoList = document.getElementById('videoList');
+    const titleEl = document.getElementById('title');
+    const urlEl = document.getElementById('url');
+    const addBtn = document.getElementById('addBtn');
+
+    function renderVideos(){
+      const items = KidsApp.Store.getChants('en');
+      videoList.innerHTML = '';
+      if(!items.length){ videoList.innerHTML = `<p class='alert'>영상이 없어요. 위에 링크를 추가해 보세요.</p>`; return; }
+      items.forEach((it, idx)=>{
+        const card = document.createElement('div'); card.className='card';
+        const row = document.createElement('div'); row.className='row';
+        row.innerHTML = `<h3 style='margin:0;flex:1'>${it.title||'Untitled'}</h3>`+
+          `<button class='button small' data-idx='${idx}' data-act='del'>삭제</button>`;
+        const iframe = document.createElement('iframe'); iframe.className='video'; iframe.src = it.embed; iframe.allowFullscreen = true;
+        card.appendChild(row); card.appendChild(iframe); videoList.appendChild(card);
+      });
+    }
+
+    videoList.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-act]'); if(!btn) return;
+      const idx = Number(btn.dataset.idx);
+      const items = KidsApp.Store.getChants('en');
+      items.splice(idx,1); KidsApp.Store.setChants(items,'en'); renderVideos();
+    });
+
+    addBtn.addEventListener('click', ()=>{
+      const t = titleEl.value.trim(); const u = urlEl.value.trim();
+      const embed = KidsApp.YouTube.embedUrl(u); if(!embed){ alert('링크 확인해주세요'); return; }
+      const items = KidsApp.Store.getChants('en'); items.push({ title: t||'Untitled', embed });
+      KidsApp.Store.setChants(items,'en'); titleEl.value=''; urlEl.value=''; renderVideos();
+    });
+
+    // Flashcards
+    const wordsEl = document.getElementById('words');
+    const previewEl = document.getElementById('flashPreview');
+    document.getElementById('previewBtn').addEventListener('click', ()=>{
+      const words = wordsEl.value.split(',').map(w=>w.trim()).filter(Boolean);
+      renderFlashcards(words);
+    });
+    document.getElementById('printBtn').addEventListener('click', ()=>{
+      const words = wordsEl.value.split(',').map(w=>w.trim()).filter(Boolean);
+      const html = flashcardsHTML(words);
+      const w = window.open('', '_blank');
+      w.document.write(`<!doctype html><html><head><meta charset='utf-8'><title>Flashcards</title><link rel='stylesheet' href='/assets/css/styles.css'></head><body class='printable'>${html}</body></html>`);
+      w.document.close(); w.focus(); w.print();
+    });
+
+    function renderFlashcards(words){ previewEl.innerHTML = flashcardsHTML(words); }
+
+    function flashcardsHTML(words){
+      if(!words.length) return `<p class='alert'>단어를 입력해 주세요.</p>`;
+      const cards = words.map(w=>`<div style='border:1px solid #222;padding:20px;border-radius:12px;text-align:center;font-size:28px'>${w}</div>`).join('');
+      return `<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:10px'>${cards}</div>`;
+    }
+
+    renderVideos();
+  </script>
+</body>
+</html>
