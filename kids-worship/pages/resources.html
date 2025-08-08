@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>교육자료 · 유아부</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>교육자료</h1>
+    <nav class="nav">
+      <a href="/index.html">홈</a>
+      <a href="/pages/chant.html">챈트영상</a>
+      <a href="/pages/pangpang.html">팡팡바이블</a>
+      <a href="/pages/english.html">영어학습</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>제목</th>
+          <th>유형</th>
+          <th>연령</th>
+          <th>태그</th>
+          <th>다운로드</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </main>
+
+  <script src="/assets/js/data.js"></script>
+  <script>
+    const tbody = document.getElementById('tbody');
+    const items = (window.KIDS_DATA && window.KIDS_DATA.resources) || [];
+    tbody.innerHTML = items.map(r=>`
+      <tr>
+        <td>${r.title}</td>
+        <td>${r.type}</td>
+        <td>${r.age}</td>
+        <td>${(r.tags||[]).join(', ')}</td>
+        <td><a class='button small' href='${r.url}' download>다운로드</a></td>
+      </tr>
+    `).join('');
+  </script>
+</body>
+</html>

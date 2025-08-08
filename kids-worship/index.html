@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#6d7cff" />
+  <title>유아부 예배 프로그램</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/assets/icon-192.png" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>유아부 예배 프로그램</h1>
+    <nav class="nav">
+      <a href="/pages/chant.html">챈트영상</a>
+      <a href="/pages/pangpang.html">팡팡바이블</a>
+      <a href="/pages/resources.html">교육자료</a>
+      <a href="/pages/english.html">영어학습</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>0~4세 유아를 위한 예배 도구</h2>
+      <p>찬양 율동, 말씀 활동, 교육자료, 영어 학습까지 한 곳에서.</p>
+      <div class="quick-actions">
+        <a class="button primary" href="/pages/chant.html">챈트영상 바로가기</a>
+        <a class="button" href="/pages/pangpang.html">팡팡바이블</a>
+        <a class="button" href="/pages/resources.html">교육자료</a>
+        <a class="button" href="/pages/english.html">영어학습</a>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h3>맞춤 챈트 재생목록</h3>
+        <p>유튜브 링크를 붙여넣고 내 재생목록을 만드세요. 오프라인에서도 목록은 유지됩니다.</p>
+        <a class="button small" href="/pages/chant.html">관리하기</a>
+      </div>
+      <div class="card">
+        <h3>팡팡바이블 액티비티</h3>
+        <p>설교 후 적용 액티비티를 카드로 정리하고, 준비물/진행 순서를 한눈에 확인하세요.</p>
+        <a class="button small" href="/pages/pangpang.html">보기</a>
+      </div>
+      <div class="card">
+        <h3>교육자료</h3>
+        <p>컬러링, 레슨 플랜, 활동지 등을 다운로드하고 인쇄하세요.</p>
+        <a class="button small" href="/pages/resources.html">자료실</a>
+      </div>
+      <div class="card">
+        <h3>영어학습</h3>
+        <p>알파벳/단어 플래시카드를 빠르게 생성하고 인쇄할 수 있습니다.</p>
+        <a class="button small" href="/pages/english.html">학습하기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Kids Worship · 브라우저 저장소(LocalStorage) 사용 · PWA 지원</small>
+  </footer>
+
+  <script src="/assets/js/app.js"></script>
+  <script>
+    window.KidsApp && window.KidsApp.registerServiceWorker('/sw.js');
+  </script>
+</body>
+</html>
